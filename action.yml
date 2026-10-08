@@ -1,0 +1,107 @@
+name: ModRelease Gate
+description: Scan a game-mod repository with ModRelease Studio, publish safe annotations, and upload Markdown/JSON reports.
+author: GhosTnever
+inputs:
+  mod-path:
+    description: Path to the mod folder or ZIP, relative to the checked-out workspace.
+    required: false
+    default: .
+  config-file:
+    description: Optional path to modrelease.toml.
+    required: false
+    default: ''
+  tool-version:
+    description: ModRelease Studio release tag. Must be an exact semantic version tag such as v0.2.1.
+    required: false
+    default: v0.2.1
+  python-version:
+    description: Python version used to run ModRelease Studio.
+    required: false
+    default: '3.12'
+  artifact-name:
+    description: Name of the uploaded report artifact.
+    required: false
+    default: modrelease-report
+  fail-on-warning:
+    description: Fail the job when the report contains one or more warnings.
+    required: false
+    default: 'false'
+outputs:
+  json-report:
+    description: Path to the generated JSON report on the runner.
+    value: ${{ steps.paths.outputs.json-report }}
+  markdown-report:
+    description: Path to the generated Markdown report on the runner.
+    value: ${{ steps.paths.outputs.markdown-report }}
+runs:
+  using: composite
+  steps:
+    - name: Validate tool version
+      shell: bash
+      env:
+        TOOL_VERSION: ${{ inputs.tool-version }}
+      run: |
+        if [[ ! "$TOOL_VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "tool-version must be an exact semantic version tag, for example v0.2.1" >&2
+          exit 2
+        fi
+    - name: Validate fail-on-warning input
+      shell: bash
+      env:
+        FAIL_ON_WARNING: ${{ inputs.fail-on-warning }}
+      run: |
+        case "$FAIL_ON_WARNING" in
+          true|false) ;;
+          *) echo "fail-on-warning must be true or false" >&2; exit 2 ;;
+        esac
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install ModRelease Studio
+      shell: bash
+      env:
+        TOOL_VERSION: ${{ inputs.tool-version }}
+      run: python -m pip install "modrelease-studio @ git+https://github.com/GhosTnever-lkm/modrelease-studio.git@${TOOL_VERSION}"
+    - name: Prepare report paths
+      id: paths
+      shell: bash
+      run: |
+        echo "json-report=$RUNNER_TEMP/modrelease-report.json" >> "$GITHUB_OUTPUT"
+        echo "markdown-report=$RUNNER_TEMP/modrelease-report.md" >> "$GITHUB_OUTPUT"
+    - name: Scan mod
+      shell: bash
+      env:
+        MOD_PATH: ${{ inputs.mod-path }}
+        CONFIG_FILE: ${{ inputs.config-file }}
+        JSON_REPORT: ${{ runner.temp }}/modrelease-report.json
+        MARKDOWN_REPORT: ${{ runner.temp }}/modrelease-report.md
+      run: |
+        args=(scan "$MOD_PATH" --json-out "$JSON_REPORT" --md-out "$MARKDOWN_REPORT")
+        if [[ -n "$CONFIG_FILE" ]]; then
+          args+=(--config "$CONFIG_FILE")
+        fi
+        set +e
+        modrelease "${args[@]}" > "$RUNNER_TEMP/modrelease-scan.log" 2>&1
+        scan_status=$?
+        set -e
+        if [[ "$scan_status" -ne 0 ]]; then
+          echo "::error title=ModRelease Studio::Scan exited with status ${scan_status}. Review the report artifact if it was created."
+          exit "$scan_status"
+        fi
+    - name: Add findings to the workflow
+      if: always()
+      shell: bash
+      env:
+        JSON_REPORT: ${{ runner.temp }}/modrelease-report.json
+        FAIL_ON_WARNING: ${{ inputs.fail-on-warning }}
+      run: python "${GITHUB_ACTION_PATH}/scripts/annotate.py" "$JSON_REPORT"
+    - name: Upload scan reports
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: |
+          ${{ runner.temp }}/modrelease-report.md
+          ${{ runner.temp }}/modrelease-report.json
+        if-no-files-found: ignore
