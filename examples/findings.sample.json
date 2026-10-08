@@ -1,0 +1,22 @@
+{
+  "target": "examples/fake-mod",
+  "profile": "default",
+  "file_count": 2,
+  "status": "FAIL",
+  "errors": 1,
+  "warnings": 1,
+  "findings": [
+    {
+      "code": "GENERIC_API_KEY",
+      "severity": "ERROR",
+      "path": "common/example.txt",
+      "message": "Possible hard-coded secret found."
+    },
+    {
+      "code": "MISSING_RELEASE_FILE",
+      "severity": "WARNING",
+      "path": "CHANGELOG.md",
+      "message": "Recommended release file is missing: CHANGELOG.md"
+    }
+  ]
+}
