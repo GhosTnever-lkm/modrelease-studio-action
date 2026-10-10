@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.3
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.4
         with:
           mod-path: .
-          tool-version: v0.3.1
+          tool-version: v0.3.2
 ```
 
 The consumer workflow must check out its mod repository first. The action installs the scanner from its exact tagged GitHub source; it never runs `pip install .` in the consumer project.
