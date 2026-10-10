@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.8 - 2026-10-11
+
+- Pin the default scanner and Action integration fixture to ModRelease Studio v0.3.6.
+- Refresh the quick-start to v1.0.8.
+
 ## 1.0.7 - 2026-10-11
 
 - Pin the default and integration fixture to ModRelease Studio v0.3.5.
