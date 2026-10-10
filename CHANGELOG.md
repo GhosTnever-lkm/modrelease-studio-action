@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.7 - 2026-10-11
+
+- Pin the default and integration fixture to ModRelease Studio v0.3.5.
+- Refresh the Action quick-start to v1.0.7.
+
 ## 1.0.6 - 2026-10-11
 
 - Document workspace-relative `config-file` use for ModRelease Studio v0.3.4 required-path policies.
