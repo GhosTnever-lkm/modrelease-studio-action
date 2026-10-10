@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.6 - 2026-10-11
+
+- Document workspace-relative `config-file` use for ModRelease Studio v0.3.4 required-path policies.
+- Add a CI integration run of the composite Action against a clean policy fixture.
+- Correct the README scanner default and refresh quick-start to v1.0.6.
+
 ## 1.0.5 - 2026-10-11
 
 - Update the default and quick-start scanner pin to ModRelease Studio v0.3.4.

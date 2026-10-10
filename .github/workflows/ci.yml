@@ -21,3 +21,9 @@ jobs:
         env:
           GITHUB_STEP_SUMMARY: ${{ runner.temp }}/modrelease-summary.md
         run: python scripts/annotate.py examples/findings.sample.json
+      - name: Exercise the composite Action with a project policy
+        uses: ./
+        with:
+          mod-path: examples/policy-project
+          config-file: examples/policy-project/modrelease.toml
+          tool-version: v0.3.4

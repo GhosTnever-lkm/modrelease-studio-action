@@ -1,0 +1,3 @@
+[scan]
+required_paths = ["descriptor.mod", "README.md"]
+required_paths_severity = "ERROR"
