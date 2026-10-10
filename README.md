@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.2
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.3
         with:
           mod-path: .
           tool-version: v0.3.1

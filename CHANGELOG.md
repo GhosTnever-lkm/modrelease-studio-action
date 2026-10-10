@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3 — 2026-10-11
+
+- Add GitHub Funding metadata with verified Buy Me a Coffee and Gumroad links.
+- Refresh the quick-start action tag.
+
 ## 1.0.2 - 2026-10-11
 
 - Refresh the quick-start to use action v1.0.2 and ModRelease Studio v0.3.1.
