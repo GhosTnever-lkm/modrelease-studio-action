@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 - 2026-10-10
+
+- Add a version badge to the README alongside the CI badge.
+
 ## 1.0.0 - 2026-10-08
 
 - Initial composite GitHub Action for running ModRelease Studio on checked-out mod folders and ZIPs.

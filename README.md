@@ -2,7 +2,7 @@
 
 **Run ModRelease Studio in GitHub Actions for every mod pull request.** Get workflow annotations for blocking and advisory findings, a Markdown job summary, and downloadable JSON/Markdown reports.
 
-[![CI](https://github.com/GhosTnever-lkm/modrelease-studio-action/actions/workflows/ci.yml/badge.svg)](https://github.com/GhosTnever-lkm/modrelease-studio-action/actions/workflows/ci.yml) · [Latest release](https://github.com/GhosTnever-lkm/modrelease-studio-action/releases/latest) · [MIT License](LICENSE)
+[![CI](https://github.com/GhosTnever-lkm/modrelease-studio-action/actions/workflows/ci.yml/badge.svg)](https://github.com/GhosTnever-lkm/modrelease-studio-action/actions/workflows/ci.yml) · [![Version](https://img.shields.io/github/v/release/GhosTnever-lkm/modrelease-studio-action?sort=semver)](https://github.com/GhosTnever-lkm/modrelease-studio-action/releases/latest) · [MIT License](LICENSE)
 
 ModRelease Gate is a small composite action around the existing [ModRelease Studio](https://github.com/GhosTnever-lkm/modrelease-studio) scanner. It does not comment on pull requests through the API, modify the checked-out mod, or upload source files. It uploads only the generated reports as a workflow artifact.
 
