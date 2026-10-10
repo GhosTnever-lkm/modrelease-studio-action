@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 - 2026-10-11
+
+- Refresh the quick-start to use action v1.0.2 and ModRelease Studio v0.3.1.
+- Update the action default scanner version to v0.3.1.
+
 ## 1.0.1 - 2026-10-10
 
 - Add a version badge to the README alongside the CI badge.
