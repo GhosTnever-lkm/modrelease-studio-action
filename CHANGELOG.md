@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5 - 2026-10-11
+
+- Update the default and quick-start scanner pin to ModRelease Studio v0.3.4.
+- Refresh the example Action reference to v1.0.5.
+
 ## 1.0.4 - 2026-10-11
 
 - Update the default and quick-start scanner pin to ModRelease Studio v0.3.2, including required-path policy support.
