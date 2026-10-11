@@ -75,3 +75,19 @@ jobs:
         env:
           ACTION_OUTCOME: ${{ steps.expected-invalid-policy.outcome }}
         run: test "$ACTION_OUTCOME" = "failure"
+      - name: Create a warning-only release fixture
+        run: mkdir -p warning-project
+      - name: Verify fail-on-warning blocks the Action
+        id: expected-warning-failure
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: warning-project
+          tool-version: v0.3.15
+          fail-on-warning: true
+          artifact-name: warning-report
+      - name: Assert warning policy was blocking
+        if: always()
+        env:
+          ACTION_OUTCOME: ${{ steps.expected-warning-failure.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"

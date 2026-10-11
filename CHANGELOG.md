@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.21 - 2026-10-11
+
+- Add an end-to-end expected-failure fixture for the `fail-on-warning` Action input.
+- Refresh the README quick-start tag to v1.0.21.
+
 ## 1.0.20 - 2026-10-11
 
 - Add an expected-failure composite Action fixture for an out-of-range `max_file_bytes` policy.
