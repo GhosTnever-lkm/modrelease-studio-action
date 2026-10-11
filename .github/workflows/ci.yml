@@ -107,3 +107,19 @@ jobs:
         env:
           ACTION_OUTCOME: ${{ steps.expected-outside-config-failure.outcome }}
         run: test "$ACTION_OUTCOME" = "failure"
+      - name: Create a workspace symlink to the external config fixture
+        run: ln -s "$RUNNER_TEMP/outside-modrelease.toml" config-symlink.toml
+      - name: Verify a config symlink escape blocks the Action
+        id: expected-config-symlink-failure
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: examples/policy-project
+          config-file: config-symlink.toml
+          tool-version: v0.3.15
+          artifact-name: symlink-config-report
+      - name: Assert config symlink escape was rejected
+        if: always()
+        env:
+          ACTION_OUTCOME: ${{ steps.expected-config-symlink-failure.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"

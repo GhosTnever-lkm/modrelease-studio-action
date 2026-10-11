@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.25 - 2026-10-11
+
+- Add an end-to-end CI fixture proving that a workspace config symlink pointing outside the checkout is rejected.
+- Refresh the README quick-start tag to v1.0.25.
+
 ## 1.0.24 - 2026-10-11
 
 - Add an expected-failure composite Action fixture for a config file outside the checkout.
