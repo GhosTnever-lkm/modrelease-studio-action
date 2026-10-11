@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.29 - 2026-10-11
+
+- Advance the default scanner to v0.3.25 so the Action uses symlink-safe indexed reads.
+- Refresh action examples and end-to-end fixtures; the successful policy fixture now exercises the action default.
+
+
 ## 1.0.28 - 2026-10-11
 
 - Pin the default scanner to v0.3.16, which omits local parent directories from shared reports.
