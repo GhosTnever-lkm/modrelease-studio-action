@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.33 - 2026-10-11
+
+- Upgrade the default scanner to v0.3.46, surfacing `LARGE_TEXT_FILE` when an indexed text file grows past the bounded read limit.
+- Add a CI integration check for the installed scanner warning.
+
+
 ## 1.0.32 - 2026-10-11
 
 - Advance the default scanner pin to v0.3.44 so uploaded JSON/Markdown artifacts visibly escape bidi and Unicode line separators.

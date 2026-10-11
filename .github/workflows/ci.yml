@@ -27,7 +27,23 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.44"
+        run: test "$(modrelease --version)" = "modrelease 0.3.46"
+      - name: Verify changed-file-size warning from the installed scanner
+        run: |
+          python - <<'PYCODE'
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
+          from unittest.mock import patch
+          from modrelease_studio.models import FileRecord, Source
+          from modrelease_studio.scanner import scan_source
+          with TemporaryDirectory() as directory:
+              source = Source(Path(directory), [FileRecord("growing.txt", 1)], [], False)
+              with patch.object(Source, "read", return_value=b"x" * 11), patch.object(Source, "digest", return_value="0" * 64):
+                  report = scan_source(source, config={"max_file_bytes": 10, "required_files": []})
+          finding = next(item for item in report.findings if item.code == "LARGE_TEXT_FILE")
+          assert finding.severity == "WARNING" and "exceeded" in finding.message
+          assert report.status == "REVIEW"
+          PYCODE
       - name: Create Unicode report fixture
         run: |
           mkdir -p unicode-output-project
@@ -67,10 +83,10 @@ jobs:
         continue-on-error: true
         with:
           mod-path: examples/path-collision-project
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.44"
+        run: test "$(modrelease --version)" = "modrelease 0.3.46"
       - name: Assert collision finding was blocking
         if: always()
         env:
@@ -89,7 +105,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: unsafe-path.zip
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: unsafe-path-report
       - name: Assert nonportable path finding was blocking
         if: always()
@@ -103,7 +119,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/invalid-scan-config/modrelease.toml
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: invalid-policy-report
       - name: Assert invalid scan policy was blocking
         if: always()
@@ -118,7 +134,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: warning-project
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           fail-on-warning: true
           artifact-name: warning-report
       - name: Assert warning policy was blocking
@@ -135,7 +151,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: ${{ runner.temp }}/outside-modrelease.toml
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: outside-config-report
       - name: Assert external config path was rejected
         if: always()
@@ -151,7 +167,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: config-symlink.toml
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: symlink-config-report
       - name: Assert config symlink escape was rejected
         if: always()
@@ -166,7 +182,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: ${{ runner.temp }}/outside-mod
-          tool-version: v0.3.44
+          tool-version: v0.3.46
           artifact-name: outside-mod-report
       - name: Assert external mod-path was rejected
         if: always()
