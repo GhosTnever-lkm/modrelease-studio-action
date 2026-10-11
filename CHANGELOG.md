@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.12 - 2026-10-11
+
+- Pin the default scanner and clean/collision CI fixtures to ModRelease Studio v0.3.9.
+- Refresh the README quick-start tag to v1.0.12.
+
 ## 1.0.11 - 2026-10-11
 
 - Exercise a synthetic case-only path collision through the composite Action and assert that it blocks the run.
