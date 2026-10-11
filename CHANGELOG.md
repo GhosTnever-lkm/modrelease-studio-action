@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.34 - 2026-10-11
+
+- Add a scanner-derived `LARGE_TEXT_FILE` policy check: advisory mode passes, `fail-on-warning` blocks.
+
+
 ## 1.0.33 - 2026-10-11
 
 - Upgrade the default scanner to v0.3.46, surfacing `LARGE_TEXT_FILE` when an indexed text file grows past the bounded read limit.
