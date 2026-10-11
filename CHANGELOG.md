@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.30 - 2026-10-11
+
+- Assert the exact installed ModRelease Studio version after default and explicit Action invocations.
+- Keep the scanner pin at v0.3.25; this release changes CI verification only.
+
 ## 1.0.29 - 2026-10-11
 
 - Advance the default scanner to v0.3.25 so the Action uses symlink-safe indexed reads.
