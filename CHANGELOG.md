@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.24 - 2026-10-11
+
+- Add an expected-failure composite Action fixture for a config file outside the checkout.
+- Refresh the README quick-start tag to v1.0.24.
+
 ## 1.0.23 - 2026-10-11
 
 - Apply workspace confinement to `config-file` as well as `mod-path`; require config files to exist as regular files.
