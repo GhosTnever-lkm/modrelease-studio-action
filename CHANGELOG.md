@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.22 - 2026-10-11
+
+- Reject absolute, parent-traversal, and symlink-resolved `mod-path` values outside the checked-out workspace.
+- Add unit coverage for valid paths, outside paths, and symlink escapes.
+- Refresh the README quick-start tag to v1.0.22.
+
 ## 1.0.21 - 2026-10-11
 
 - Add an end-to-end expected-failure fixture for the `fail-on-warning` Action input.
