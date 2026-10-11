@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.11 - 2026-10-11
+
+- Exercise a synthetic case-only path collision through the composite Action and assert that it blocks the run.
+- Refresh the quick-start tag to v1.0.11.
+
 ## 1.0.10 - 2026-10-11
 
 - Pin the scanner and integration fixture to ModRelease Studio v0.3.8.

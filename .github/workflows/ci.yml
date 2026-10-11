@@ -27,3 +27,17 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
           tool-version: v0.3.8
+
+      - name: Verify cross-platform path collision blocks the action
+        id: expected-collision-failure
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: examples/path-collision-project
+          tool-version: v0.3.8
+          artifact-name: path-collision-report
+      - name: Assert collision finding was blocking
+        if: always()
+        env:
+          ACTION_OUTCOME: ${{ steps.expected-collision-failure.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"
