@@ -1,3 +1,10 @@
+# Changelog
+
+## 1.0.42 - 2026-10-12
+
+- Pin the default scanner to ModRelease Studio v0.3.58, including SARIF 2.1.0 export.
+- Refresh the current usage example and CI integration checks to use the latest scanner and Action release.
+
 ## 1.0.41 - 2026-10-11
 
 - Pin the default scanner to ModRelease Studio v0.3.57, which prunes a directory and emits `READ_METADATA` if junction-status metadata cannot be checked.
@@ -13,8 +20,6 @@
 
 - Upgrade the default ModRelease Studio scanner to v0.3.56, which avoids traversing Windows directory junctions and reports skipped junctions.
 - Assert the installed default scanner version in CI.
-
-# Changelog
 
 ## 1.0.38 - 2026-10-11
 

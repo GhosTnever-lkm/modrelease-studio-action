@@ -45,7 +45,12 @@ class WorkspacePathTests(unittest.TestCase):
             workspace.mkdir()
             outside.mkdir()
             (outside / "secret.txt").write_text("synthetic fixture only", encoding="utf-8")
-            (workspace / "escape").symlink_to(outside, target_is_directory=True)
+            try:
+                (workspace / "escape").symlink_to(outside, target_is_directory=True)
+            except OSError as exc:
+                if getattr(exc, "winerror", None) == 1314:
+                    self.skipTest("symbolic links are unavailable for this Windows account")
+                raise
             with self.assertRaisesRegex(ValueError, "inside the workspace"):
                 resolve_workspace_path("escape/secret.txt", workspace)
             with self.assertRaises(FileNotFoundError):
