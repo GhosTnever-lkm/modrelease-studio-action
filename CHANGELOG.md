@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.35 - 2026-10-11
+
+- Upgrade the default scanner to v0.3.50 for generated-folder exclusions and OS-junk warnings.
+- Verify the installed scanner traversal policy in CI.
+
+
 ## 1.0.34 - 2026-10-11
 
 - Add a scanner-derived `LARGE_TEXT_FILE` policy check: advisory mode passes, `fail-on-warning` blocks.
