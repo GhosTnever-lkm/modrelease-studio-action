@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.31 - 2026-10-11
+
+- Escape bidi controls and Unicode line/paragraph separators visibly in workflow annotations and Markdown summaries to prevent deceptive output.
+- Extend tests to cover bidi, C1, ANSI, U+2028, and U+2029 values; keep the scanner pin at v0.3.25 because scanning behavior is unchanged.
+
 ## 1.0.30 - 2026-10-11
 
 - Assert the exact installed ModRelease Studio version after default and explicit Action invocations.

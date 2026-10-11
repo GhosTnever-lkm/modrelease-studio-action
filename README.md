@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.30
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.31
         with:
           mod-path: .
           tool-version: v0.3.25
@@ -39,7 +39,7 @@ The consumer workflow must check out its mod repository first. The action instal
 Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.25 supports required path globs and ERROR/WARNING/INFO severity, confines content reads to indexed regular files, and does not follow symlink paths. Shareable reports include only the source basename, not local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.30
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.31
   with:
     mod-path: .
     config-file: modrelease.toml
@@ -74,7 +74,7 @@ The `tool-version` input accepts a strict `major.minor.patch` tag, with an optio
 - **Artifact:** `modrelease-report.md` and `modrelease-report.json`, available even when the scan reports blocking findings.
 - **Outputs:** runner paths to the JSON and Markdown reports (`steps.<id>.outputs.json-report` and `markdown-report`).
 
-Annotation fields are escaped using GitHub's workflow-command encoding, and untrusted file paths are escaped in Markdown. The scanner's messages do not include detected credential values. The workflow artifact includes the scanner's file manifest and paths; artifact access follows the mod repository's Actions permissions and retention policy.
+Annotation fields are escaped using GitHub's workflow-command encoding; untrusted control, bidi, and Unicode line-separator characters are shown as visible escapes in annotations and the Markdown summary. The scanner's messages do not include detected credential values. The workflow artifact includes the scanner's file manifest and paths; artifact access follows the mod repository's Actions permissions and retention policy.
 
 ## Development
 

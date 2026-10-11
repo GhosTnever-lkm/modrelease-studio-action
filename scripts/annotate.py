@@ -5,6 +5,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -13,15 +14,27 @@ SEVERITY_COMMAND = {"ERROR": "error", "WARNING": "warning", "INFO": "notice"}
 _CONTROL_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 _MARKDOWN_SPECIAL = re.compile(r"([\\`*_{}\[\]()#+.!|><:~-])")
 
+def _visible_invisibles(value: Any) -> str:
+    """Make bidi, control, and Unicode line separators visible in output."""
+    output = []
+    for char in str(value):
+        if char in "\r\n":
+            output.append(char)
+        elif unicodedata.category(char).startswith("C") or unicodedata.category(char) in {"Zl", "Zp"}:
+            output.append(f"\\u{{{ord(char):04x}}}")
+        else:
+            output.append(char)
+    return "".join(output)
+
 def _clean_text(value: Any) -> str:
-    """Flatten untrusted values into one line before writing workflow output."""
-    text = str(value)
-    text = _CONTROL_CHARS.sub(" ", text)
-    return " ".join(text.replace("\r", " ").replace("\n", " ").split())
+    """Flatten untrusted values and visibly escape invisible code points."""
+    text = str(value).replace("\r", " ").replace("\n", " ").replace("\t", " ")
+    return " ".join(_visible_invisibles(text).split())
 
 def escape_data(value: Any) -> str:
     """Escape workflow-command data so a finding cannot add another command."""
-    return _CONTROL_CHARS.sub(" ", str(value)).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    text = _visible_invisibles(value)
+    return _CONTROL_CHARS.sub(" ", text).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
 
 def escape_property(value: Any) -> str:
     """Escape workflow-command properties, including delimiters between fields."""

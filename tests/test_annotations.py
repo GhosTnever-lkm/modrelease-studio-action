@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.annotate import MAX_ANNOTATIONS, _annotation, _validate_report, escape_data, escape_markdown, escape_property, publish
+from scripts.annotate import MAX_ANNOTATIONS, _annotation, _summary, _validate_report, escape_data, escape_markdown, escape_property, publish
 
 class EscapeTests(unittest.TestCase):
     def test_workflow_data_escapes_percent_and_line_breaks(self):
@@ -17,6 +17,23 @@ class EscapeTests(unittest.TestCase):
 
     def test_markdown_escapes_untrusted_filename_markup(self):
         self.assertEqual(escape_markdown("[x](url)|`code`"), r"\[x\]\(url\)\|\`code\`")
+
+    def test_bidi_and_unicode_separators_are_visible_in_annotations_and_summary(self):
+        item = {
+            "severity": "ERROR",
+            "code": "RULE\u202eTXT",
+            "path": "mods/evil\u202eexe.zip\u2028line\u2029end\u0085file",
+            "message": "readme\u202etxt\x1b[31m",
+        }
+        annotation = _annotation(item)
+        summary = _summary([item], 1, 0, 0)
+        for output in (annotation, summary):
+            for invisible in ("\u202e", "\u2028", "\u2029", "\u0085", "\x1b"):
+                self.assertNotIn(invisible, output.casefold())
+        self.assertIn(r"\u{202e}", annotation.casefold())
+        self.assertIn("2028", summary.casefold())
+        self.assertIn("0085", summary.casefold())
+        self.assertEqual(len(annotation.splitlines()), 1)
 
     def test_severity_maps_to_supported_workflow_commands(self):
         for severity, expected in (("ERROR", "::error"), ("WARNING", "::warning"), ("INFO", "::notice")):
