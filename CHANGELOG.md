@@ -1,3 +1,8 @@
+## 1.0.40 - 2026-10-11
+
+- Exercise the scanner's `JUNCTION` warning through the real report formatter: advisory mode passes and `fail-on-warning` blocks.
+- Keep the default scanner on v0.3.56.
+
 ## 1.0.39 - 2026-10-11
 
 - Upgrade the default ModRelease Studio scanner to v0.3.56, which avoids traversing Windows directory junctions and reports skipped junctions.

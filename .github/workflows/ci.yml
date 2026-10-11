@@ -108,6 +108,36 @@ jobs:
           set -e
           test "$advisory" -eq 0
           test "$strict" -eq 1
+      - name: Verify junction finding follows warning policy
+        env:
+          REPORT_PATH: ${{ runner.temp }}/junction-warning.json
+        run: |
+          python - <<'PYCODE'
+          import os
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
+          from unittest.mock import patch
+          from modrelease_studio.reports import json_report
+          from modrelease_studio.scanner import scan_path
+          with TemporaryDirectory() as directory:
+              root = Path(directory) / "mod"
+              junction = root / "junction"
+              junction.mkdir(parents=True)
+              (junction / "fixture.txt").write_text("synthetic fixture", encoding="utf-8")
+              with patch.object(Path, "is_junction", lambda path: path.name == "junction", create=True):
+                  report = scan_path(root, config={"required_files": []})
+          finding = next(item for item in report.findings if item.code == "JUNCTION")
+          assert finding.severity == "WARNING" and report.status == "REVIEW"
+          Path(os.environ["REPORT_PATH"]).write_text(json_report(report), encoding="utf-8")
+          PYCODE
+          set +e
+          python scripts/annotate.py "$REPORT_PATH"
+          advisory=$?
+          FAIL_ON_WARNING=true python scripts/annotate.py "$REPORT_PATH"
+          strict=$?
+          set -e
+          test "$advisory" -eq 0
+          test "$strict" -eq 1
       - name: Create Unicode report fixture
         run: |
           mkdir -p unicode-output-project
