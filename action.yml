@@ -58,10 +58,11 @@ runs:
       uses: actions/setup-python@v7
       with:
         python-version: ${{ inputs.python-version }}
-    - name: Validate mod path stays inside the workspace
+    - name: Validate input paths stay inside the workspace
       shell: bash
       env:
         MOD_PATH: ${{ inputs.mod-path }}
+        CONFIG_FILE: ${{ inputs.config-file }}
         WORKSPACE: ${{ github.workspace }}
       run: python "${GITHUB_ACTION_PATH}/scripts/validate_workspace_path.py"
     - name: Install ModRelease Studio

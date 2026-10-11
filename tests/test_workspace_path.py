@@ -27,6 +27,16 @@ class WorkspacePathTests(unittest.TestCase):
                 with self.subTest(value=value), self.assertRaisesRegex(ValueError, "inside the workspace"):
                     resolve_workspace_path(value, workspace)
 
+    def test_config_file_must_be_an_existing_file_inside_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "workspace"
+            workspace.mkdir()
+            config = workspace / "modrelease.toml"
+            config.write_text("[scan]\n", encoding="utf-8")
+            self.assertEqual(resolve_workspace_path(str(config), workspace, require_file=True), config.resolve())
+            with self.assertRaisesRegex(ValueError, "path must be a file"):
+                resolve_workspace_path(".", workspace, require_file=True)
+
     def test_rejects_symlink_escape_and_missing_path(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

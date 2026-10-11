@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.22
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.23
         with:
           mod-path: .
           tool-version: v0.3.15
@@ -36,10 +36,10 @@ The consumer workflow must check out its mod repository first. The action instal
 
 ### Use a project-specific release policy
 
-Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. ModRelease Studio v0.3.15 supports required path globs and ERROR/WARNING/INFO severity; an ERROR-level missing path fails the scan. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
+Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.15 supports required path globs and ERROR/WARNING/INFO severity; an ERROR-level missing path fails the scan. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.22
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.23
   with:
     mod-path: .
     config-file: modrelease.toml

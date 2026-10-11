@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.23 - 2026-10-11
+
+- Apply workspace confinement to `config-file` as well as `mod-path`; require config files to exist as regular files.
+- Extend unit coverage for valid config files and directory rejection.
+- Refresh the README quick-start tag to v1.0.23.
+
 ## 1.0.22 - 2026-10-11
 
 - Reject absolute, parent-traversal, and symlink-resolved `mod-path` values outside the checked-out workspace.
