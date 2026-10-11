@@ -41,3 +41,23 @@ jobs:
         env:
           ACTION_OUTCOME: ${{ steps.expected-collision-failure.outcome }}
         run: test "$ACTION_OUTCOME" = "failure"
+      - name: Create a synthetic Windows reserved-name archive
+        run: |
+          python - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("unsafe-path.zip", "w") as archive:
+              archive.writestr("mod/CON.txt", "synthetic fixture only")
+          PY
+      - name: Verify a nonportable path blocks the Action
+        id: expected-nonportable-failure
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: unsafe-path.zip
+          tool-version: v0.3.15
+          artifact-name: unsafe-path-report
+      - name: Assert nonportable path finding was blocking
+        if: always()
+        env:
+          ACTION_OUTCOME: ${{ steps.expected-nonportable-failure.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"

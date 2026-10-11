@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.19 - 2026-10-11
+
+- Exercise a synthetic Windows reserved-name ZIP through the composite Action and assert that it blocks release.
+- Refresh the README quick-start tag to v1.0.19.
+
 ## 1.0.18 - 2026-10-11
 
 - Pin the default scanner and CI integration fixtures to ModRelease Studio v0.3.15.
