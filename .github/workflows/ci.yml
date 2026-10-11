@@ -27,7 +27,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.50"
+        run: test "$(modrelease --version)" = "modrelease 0.3.52"
       - name: Verify changed-file-size warning from the installed scanner
         run: |
           python - <<'PYCODE'
@@ -49,6 +49,7 @@ jobs:
           python - <<'PYCODE'
           from pathlib import Path
           from tempfile import TemporaryDirectory
+          from unittest.mock import patch
           from modrelease_studio.scanner import scan_path
           with TemporaryDirectory() as directory:
               root = Path(directory)
@@ -57,11 +58,14 @@ jobs:
                   path.parent.mkdir(parents=True, exist_ok=True)
                   path.write_text("api_key=FAKE_api_key_value_123456789", encoding="utf-8")
               (root / "Thumbs.db").write_bytes(b"")
-              report = scan_path(root, config={"required_files": []})
+              (root / "mod.cfg").write_text("name=sample", encoding="utf-8")
+              with patch("modrelease_studio.sources.MAX_ENTRIES", 1):
+                  report = scan_path(root, config={"required_files": []})
           codes = {item.code for item in report.findings}
           assert "GENERIC_API_KEY" not in codes
           assert "OS_JUNK" in codes
-          assert report.errors == 0
+          assert "ENTRY_LIMIT" not in codes
+          assert report.file_count == 1 and report.errors == 0
           PYCODE
       - name: Verify warning policy with emitted scanner finding
         env:
@@ -128,10 +132,10 @@ jobs:
         continue-on-error: true
         with:
           mod-path: examples/path-collision-project
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.50"
+        run: test "$(modrelease --version)" = "modrelease 0.3.52"
       - name: Assert collision finding was blocking
         if: always()
         env:
@@ -150,7 +154,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: unsafe-path.zip
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: unsafe-path-report
       - name: Assert nonportable path finding was blocking
         if: always()
@@ -164,7 +168,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/invalid-scan-config/modrelease.toml
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: invalid-policy-report
       - name: Assert invalid scan policy was blocking
         if: always()
@@ -179,7 +183,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: warning-project
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           fail-on-warning: true
           artifact-name: warning-report
       - name: Assert warning policy was blocking
@@ -196,7 +200,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: ${{ runner.temp }}/outside-modrelease.toml
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: outside-config-report
       - name: Assert external config path was rejected
         if: always()
@@ -212,7 +216,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: config-symlink.toml
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: symlink-config-report
       - name: Assert config symlink escape was rejected
         if: always()
@@ -227,7 +231,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: ${{ runner.temp }}/outside-mod
-          tool-version: v0.3.50
+          tool-version: v0.3.52
           artifact-name: outside-mod-report
       - name: Assert external mod-path was rejected
         if: always()

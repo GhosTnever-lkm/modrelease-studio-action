@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.36 - 2026-10-11
+
+- Upgrade to ModRelease Studio v0.3.52, pruning ignored/generated folders before indexing.
+- Extend CI to ensure ignored dependencies cannot consume the entry limit.
+
+
 ## 1.0.35 - 2026-10-11
 
 - Upgrade the default scanner to v0.3.50 for generated-folder exclusions and OS-junk warnings.
