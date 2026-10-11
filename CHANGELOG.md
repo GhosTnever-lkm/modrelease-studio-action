@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.44 - 2026-10-12
+
+- Pin the default scanner to ModRelease Studio v0.3.60, including its synchronized release metadata and installation examples.
+- Refresh CI integration tests and examples to exercise the current scanner release.
+
 ## 1.0.43 - 2026-10-12
 
 - Export ModRelease Studio's SARIF 2.1.0 report as an Action output and downloadable artifact, including on blocking findings.
