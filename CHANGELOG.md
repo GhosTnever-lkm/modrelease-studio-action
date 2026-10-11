@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.0.36 - 2026-10-11
+## 1.0.37 - 2026-10-11
 
-- Upgrade to ModRelease Studio v0.3.52, pruning ignored/generated folders before indexing.
-- Extend CI to ensure ignored dependencies cannot consume the entry limit.
+- Correct the traversal integration fixture boundary: the OS-junk file is an indexed entry alongside the sample mod file.
+- Preserve a tight entry limit while asserting ignored folders do not consume it.
+
 
 
 ## 1.0.35 - 2026-10-11
