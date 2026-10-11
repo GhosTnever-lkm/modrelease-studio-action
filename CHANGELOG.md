@@ -1,3 +1,8 @@
+## 1.0.39 - 2026-10-11
+
+- Upgrade the default ModRelease Studio scanner to v0.3.56, which avoids traversing Windows directory junctions and reports skipped junctions.
+- Assert the installed default scanner version in CI.
+
 # Changelog
 
 ## 1.0.38 - 2026-10-11
