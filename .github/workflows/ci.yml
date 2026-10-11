@@ -27,7 +27,39 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.25"
+        run: test "$(modrelease --version)" = "modrelease 0.3.44"
+      - name: Create Unicode report fixture
+        run: |
+          mkdir -p unicode-output-project
+          cat > unicode-output-project/modrelease.toml <<'TOML'
+          [scan]
+          required_paths = ["missing\u202eext\u2028line\u2029end.txt"]
+          required_paths_severity = "WARNING"
+          TOML
+      - name: Scan with the current safe-output scanner
+        id: unicode-output
+        uses: ./
+        with:
+          mod-path: unicode-output-project
+          config-file: unicode-output-project/modrelease.toml
+          artifact-name: unicode-output-report
+      - name: Assert downloaded report artifacts are safe and lossless
+        env:
+          JSON_REPORT: ${{ steps.unicode-output.outputs.json-report }}
+          MARKDOWN_REPORT: ${{ steps.unicode-output.outputs.markdown-report }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          raw = "missing" + chr(0x202E) + "ext" + chr(0x2028) + "line" + chr(0x2029) + "end.txt"
+          json_text = Path(os.environ["JSON_REPORT"]).read_text(encoding="utf-8")
+          markdown = Path(os.environ["MARKDOWN_REPORT"]).read_text(encoding="utf-8")
+          parsed = json.loads(json_text)
+          assert parsed["findings"][0]["path"] == raw
+          for char in (chr(0x202E), chr(0x2028), chr(0x2029)):
+              assert char not in json_text and char not in markdown
+          assert all(code in markdown.lower() for code in ("202e", "2028", "2029"))
+          PY
 
       - name: Verify cross-platform path collision blocks the action
         id: expected-collision-failure
@@ -35,10 +67,10 @@ jobs:
         continue-on-error: true
         with:
           mod-path: examples/path-collision-project
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.25"
+        run: test "$(modrelease --version)" = "modrelease 0.3.44"
       - name: Assert collision finding was blocking
         if: always()
         env:
@@ -57,7 +89,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: unsafe-path.zip
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: unsafe-path-report
       - name: Assert nonportable path finding was blocking
         if: always()
@@ -71,7 +103,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/invalid-scan-config/modrelease.toml
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: invalid-policy-report
       - name: Assert invalid scan policy was blocking
         if: always()
@@ -86,7 +118,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: warning-project
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           fail-on-warning: true
           artifact-name: warning-report
       - name: Assert warning policy was blocking
@@ -103,7 +135,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: ${{ runner.temp }}/outside-modrelease.toml
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: outside-config-report
       - name: Assert external config path was rejected
         if: always()
@@ -119,7 +151,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: config-symlink.toml
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: symlink-config-report
       - name: Assert config symlink escape was rejected
         if: always()
@@ -134,7 +166,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: ${{ runner.temp }}/outside-mod
-          tool-version: v0.3.25
+          tool-version: v0.3.44
           artifact-name: outside-mod-report
       - name: Assert external mod-path was rejected
         if: always()

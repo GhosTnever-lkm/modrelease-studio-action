@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.32 - 2026-10-11
+
+- Advance the default scanner pin to v0.3.44 so uploaded JSON/Markdown artifacts visibly escape bidi and Unicode line separators.
+- Add an end-to-end workflow regression that verifies the artifact Markdown is safe and JSON preserves the decoded finding path.
+
 ## 1.0.31 - 2026-10-11
 
 - Escape bidi controls and Unicode line/paragraph separators visibly in workflow annotations and Markdown summaries to prevent deceptive output.
