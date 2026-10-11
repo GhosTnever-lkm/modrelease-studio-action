@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.20 - 2026-10-11
+
+- Add an expected-failure composite Action fixture for an out-of-range `max_file_bytes` policy.
+- Refresh the README quick-start tag to v1.0.20.
+
 ## 1.0.19 - 2026-10-11
 
 - Exercise a synthetic Windows reserved-name ZIP through the composite Action and assert that it blocks release.

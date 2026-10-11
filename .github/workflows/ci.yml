@@ -61,3 +61,17 @@ jobs:
         env:
           ACTION_OUTCOME: ${{ steps.expected-nonportable-failure.outcome }}
         run: test "$ACTION_OUTCOME" = "failure"
+      - name: Verify an out-of-range scan policy blocks the Action
+        id: expected-invalid-policy
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: examples/policy-project
+          config-file: examples/invalid-scan-config/modrelease.toml
+          tool-version: v0.3.15
+          artifact-name: invalid-policy-report
+      - name: Assert invalid scan policy was blocking
+        if: always()
+        env:
+          ACTION_OUTCOME: ${{ steps.expected-invalid-policy.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"

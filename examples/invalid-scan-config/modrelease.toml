@@ -1,0 +1,3 @@
+[scan]
+# Over the scanner's 16 MiB hard ceiling: Action must block this config.
+max_file_bytes = 16777217
