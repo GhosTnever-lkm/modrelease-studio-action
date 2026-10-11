@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.38 - 2026-10-11
+
+- Upgrade to ModRelease Studio v0.3.53; keep secret scanning active for every path shipped inside ZIP archives.
+- Add CI coverage for a synthetic secret under `.git` inside a ZIP.
+
+
 ## 1.0.37 - 2026-10-11
 
 - Correct the traversal integration fixture boundary: the OS-junk file is an indexed entry alongside the sample mod file.
