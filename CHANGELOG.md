@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.43 - 2026-10-12
+
+- Export ModRelease Studio's SARIF 2.1.0 report as an Action output and downloadable artifact, including on blocking findings.
+- Prefix SARIF locations with the checked-out folder path so findings point to repository files; ZIP scans keep archive-relative locations.
+- Document optional GitHub Code Scanning upload and its workflow-level permission requirement.
+- Add unit and end-to-end CI coverage for output readiness, blocking findings, and nested checkout paths.
+
 ## 1.0.42 - 2026-10-12
 
 - Pin the default scanner to ModRelease Studio v0.3.58, including SARIF 2.1.0 export.

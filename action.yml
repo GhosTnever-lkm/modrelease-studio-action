@@ -1,5 +1,5 @@
 name: ModRelease Gate
-description: Scan a game-mod repository with ModRelease Studio, publish safe annotations, and upload Markdown/JSON reports.
+description: Scan a game-mod repository with ModRelease Studio, publish safe annotations, and upload Markdown, JSON, and SARIF reports.
 author: GhosTnever
 inputs:
   mod-path:
@@ -33,6 +33,12 @@ outputs:
   markdown-report:
     description: Path to the generated Markdown report on the runner.
     value: ${{ steps.paths.outputs.markdown-report }}
+  sarif-report:
+    description: Path to the generated SARIF 2.1.0 report on the runner.
+    value: ${{ steps.paths.outputs.sarif-report }}
+  sarif-ready:
+    description: Whether the SARIF report was generated successfully.
+    value: ${{ steps.sarif.outputs.sarif-ready }}
 runs:
   using: composite
   steps:
@@ -59,6 +65,7 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
     - name: Validate input paths stay inside the workspace
+      id: validate-paths
       shell: bash
       env:
         MOD_PATH: ${{ inputs.mod-path }}
@@ -76,6 +83,7 @@ runs:
       run: |
         echo "json-report=$RUNNER_TEMP/modrelease-report.json" >> "$GITHUB_OUTPUT"
         echo "markdown-report=$RUNNER_TEMP/modrelease-report.md" >> "$GITHUB_OUTPUT"
+        echo "sarif-report=$RUNNER_TEMP/modrelease-report.sarif" >> "$GITHUB_OUTPUT"
     - name: Scan mod
       shell: bash
       env:
@@ -83,8 +91,13 @@ runs:
         CONFIG_FILE: ${{ inputs.config-file }}
         JSON_REPORT: ${{ runner.temp }}/modrelease-report.json
         MARKDOWN_REPORT: ${{ runner.temp }}/modrelease-report.md
+        SARIF_REPORT: ${{ runner.temp }}/modrelease-report.sarif
+        SARIF_PATH_PREFIX: ${{ steps.validate-paths.outputs.sarif-path-prefix }}
       run: |
-        args=(scan "$MOD_PATH" --json-out "$JSON_REPORT" --md-out "$MARKDOWN_REPORT")
+        args=(scan "$MOD_PATH" --json-out "$JSON_REPORT" --md-out "$MARKDOWN_REPORT" --sarif-out "$SARIF_REPORT")
+        if [[ -n "$SARIF_PATH_PREFIX" ]]; then
+          args+=(--sarif-path-prefix "$SARIF_PATH_PREFIX")
+        fi
         if [[ -n "$CONFIG_FILE" ]]; then
           args+=(--config "$CONFIG_FILE")
         fi
@@ -95,6 +108,18 @@ runs:
         if [[ "$scan_status" -ne 0 ]]; then
           echo "::error title=ModRelease Studio::Scan exited with status ${scan_status}. Review the report artifact if it was created."
           exit "$scan_status"
+        fi
+    - name: Set SARIF readiness output
+      id: sarif
+      if: always()
+      shell: bash
+      env:
+        SARIF_REPORT: ${{ runner.temp }}/modrelease-report.sarif
+      run: |
+        if [[ -s "$SARIF_REPORT" ]]; then
+          echo "sarif-ready=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "sarif-ready=false" >> "$GITHUB_OUTPUT"
         fi
     - name: Add findings to the workflow
       if: always()
@@ -111,4 +136,5 @@ runs:
         path: |
           ${{ runner.temp }}/modrelease-report.md
           ${{ runner.temp }}/modrelease-report.json
+          ${{ runner.temp }}/modrelease-report.sarif
         if-no-files-found: ignore

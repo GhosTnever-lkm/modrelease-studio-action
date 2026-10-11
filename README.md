@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.42
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.43
         with:
           mod-path: .
           tool-version: v0.3.58
@@ -39,7 +39,7 @@ The consumer workflow must check out its mod repository first. The action instal
 Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.58 supports required path globs, confines content reads to indexed regular files, does not follow symlinks or Windows directory junctions, fails closed with a `READ_METADATA` warning when a directory’s link/junction status cannot be checked, visibly escapes invisible characters in report artifacts, and warns when a text file grows past the configured read limit, prunes generated/dependency folders before indexing and content checks, and flags OS junk files. Shareable reports include only the source basename, not local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.42
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.43
   with:
     mod-path: .
     config-file: modrelease.toml
@@ -71,10 +71,37 @@ The `tool-version` input accepts a strict `major.minor.patch` tag, with an optio
 
 - **Annotations:** up to 50 findings per run, mapped to GitHub error, warning, and notice annotations.
 - **Job summary:** finding counts and a compact Markdown table.
-- **Artifact:** `modrelease-report.md` and `modrelease-report.json`, available even when the scan reports blocking findings.
-- **Outputs:** runner paths to the JSON and Markdown reports (`steps.<id>.outputs.json-report` and `markdown-report`).
+- **Artifact:** `modrelease-report.md`, `modrelease-report.json`, and `modrelease-report.sarif`, available even when the scan reports blocking findings.
+- **Outputs:** runner paths to JSON, Markdown, and SARIF reports (`steps.<id>.outputs.json-report`, `markdown-report`, and `sarif-report`), plus `sarif-ready` to confirm the SARIF file exists.
 
 Annotation fields are escaped using GitHub's workflow-command encoding; untrusted control, bidi, and Unicode line-separator characters are shown as visible escapes in annotations and the Markdown summary. The scanner's messages do not include detected credential values. The workflow artifact includes the scanner's file manifest and paths; artifact access follows the mod repository's Actions permissions and retention policy.
+
+### Optional GitHub Code Scanning upload
+
+SARIF is always included as a downloadable artifact. To also publish findings to the repository's **Security → Code scanning** page, add the upload step below after the scan. This is optional and separate from the Action. Set `security-events: write` only in a workflow that opts into uploading findings. SARIF paths automatically include the `mod-path` directory prefix for folder scans. Upload results only for a folder that is checked out in the repository; ZIP member paths do not necessarily map to committed source files. See [GitHub's SARIF upload guide](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/integrate-with-existing-tools/upload-sarif-file).
+
+```yaml
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Scan the checked-out mod folder
+        id: modrelease
+        uses: GhosTnever-lkm/modrelease-studio-action@v1.0.43
+        with:
+          mod-path: mods/my-mod
+      - name: Upload findings to Code Scanning
+        if: always() && steps.modrelease.outputs.sarif-ready == 'true'
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ${{ steps.modrelease.outputs.sarif-report }}
+          category: modrelease-studio
+```
 
 ## Development
 
