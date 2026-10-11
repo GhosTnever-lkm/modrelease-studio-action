@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.9 - 2026-10-11
+
+- Pin the scanner and CI policy fixture to ModRelease Studio v0.3.7.
+- Refresh the quick-start Action tag to v1.0.9.
+
 ## 1.0.8 - 2026-10-11
 
 - Pin the default scanner and Action integration fixture to ModRelease Studio v0.3.6.
