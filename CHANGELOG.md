@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.28 - 2026-10-11
+
+- Pin the default scanner to v0.3.16, which omits local parent directories from shared reports.
+- Refresh action usage examples to v1.0.28.
+
 ## 1.0.27 - 2026-10-11
 
 - Clarify workspace containment requirements for `mod-path` and `config-file` inputs.
