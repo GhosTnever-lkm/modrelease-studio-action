@@ -3,11 +3,11 @@ description: Scan a game-mod repository with ModRelease Studio, publish safe ann
 author: GhosTnever
 inputs:
   mod-path:
-    description: Path to the mod folder or ZIP, relative to the checked-out workspace.
+    description: Path to the mod folder or ZIP; it must resolve inside the checked-out workspace.
     required: false
     default: .
   config-file:
-    description: Optional path to modrelease.toml.
+    description: Optional existing modrelease.toml inside the checked-out workspace; symlink escapes are rejected.
     required: false
     default: ''
   tool-version:

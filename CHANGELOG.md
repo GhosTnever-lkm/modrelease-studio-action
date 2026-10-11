@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.27 - 2026-10-11
+
+- Clarify workspace containment requirements for `mod-path` and `config-file` inputs.
+- Refresh the README quick-start tag to v1.0.27.
+
 ## 1.0.26 - 2026-10-11
 
 - Add an end-to-end CI fixture proving that a `mod-path` outside the checkout is rejected.
