@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.26 - 2026-10-11
+
+- Add an end-to-end CI fixture proving that a `mod-path` outside the checkout is rejected.
+- Refresh the README quick-start tag to v1.0.26.
+
 ## 1.0.25 - 2026-10-11
 
 - Add an end-to-end CI fixture proving that a workspace config symlink pointing outside the checkout is rejected.
