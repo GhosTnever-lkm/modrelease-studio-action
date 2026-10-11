@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.13 - 2026-10-11
+
+- Pin the default scanner and CI integration fixtures to ModRelease Studio v0.3.10.
+- Refresh the README quick-start tag to v1.0.13.
+
 ## 1.0.12 - 2026-10-11
 
 - Pin the default scanner and clean/collision CI fixtures to ModRelease Studio v0.3.9.

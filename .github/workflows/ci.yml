@@ -26,7 +26,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
-          tool-version: v0.3.9
+          tool-version: v0.3.10
 
       - name: Verify cross-platform path collision blocks the action
         id: expected-collision-failure
@@ -34,7 +34,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: examples/path-collision-project
-          tool-version: v0.3.9
+          tool-version: v0.3.10
           artifact-name: path-collision-report
       - name: Assert collision finding was blocking
         if: always()
