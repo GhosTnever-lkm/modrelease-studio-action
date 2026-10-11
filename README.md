@@ -26,24 +26,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.40
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.41
         with:
           mod-path: .
-          tool-version: v0.3.56
+          tool-version: v0.3.57
 ```
 
 The consumer workflow must check out its mod repository first. The action installs the scanner from its exact tagged GitHub source; it never runs `pip install .` in the consumer project.
 
 ### Use a project-specific release policy
 
-Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.56 supports required path globs, confines content reads to indexed regular files, does not follow symlinks or Windows directory junctions, visibly escapes invisible characters in report artifacts, and warns when a text file grows past the configured read limit, prunes generated/dependency folders before indexing and content checks, and flags OS junk files. Shareable reports include only the source basename, not local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
+Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.57 supports required path globs, confines content reads to indexed regular files, does not follow symlinks or Windows directory junctions, fails closed with a `READ_METADATA` warning when a directory’s link/junction status cannot be checked, visibly escapes invisible characters in report artifacts, and warns when a text file grows past the configured read limit, prunes generated/dependency folders before indexing and content checks, and flags OS junk files. Shareable reports include only the source basename, not local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.40
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.41
   with:
     mod-path: .
     config-file: modrelease.toml
-    tool-version: v0.3.56
+    tool-version: v0.3.57
 ```
 
 Example policy:
@@ -60,7 +60,7 @@ required_paths_severity = "ERROR"
 |---|---|---|
 | `mod-path` | `.` | Mod folder or ZIP path relative to the checked-out workspace. |
 | `config-file` | empty | Optional TOML configuration path relative to the checked-out workspace. |
-| `tool-version` | `v0.3.56` | Exact scanner tag, such as `v0.3.56`. |
+| `tool-version` | `v0.3.57` | Exact scanner tag, such as `v0.3.57`. |
 | `python-version` | `3.12` | Python runtime. |
 | `artifact-name` | `modrelease-report` | Name of the uploaded reports artifact. |
 | `fail-on-warning` | `false` | Also fail the workflow when advisory warnings exist. Errors always fail the scan. |

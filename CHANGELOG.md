@@ -1,3 +1,9 @@
+## 1.0.41 - 2026-10-11
+
+- Pin the default scanner to ModRelease Studio v0.3.57, which prunes a directory and emits `READ_METADATA` if junction-status metadata cannot be checked.
+- Refresh examples and user-facing installation guidance.
+- Verify in CI that inaccessible junction metadata is pruned, reported as `READ_METADATA`, and follows advisory/strict warning policy.
+
 ## 1.0.40 - 2026-10-11
 
 - Exercise the scanner's `JUNCTION` warning through the real report formatter: advisory mode passes and `fail-on-warning` blocks.
