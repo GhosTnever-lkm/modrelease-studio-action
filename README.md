@@ -26,24 +26,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.9
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.10
         with:
           mod-path: .
-          tool-version: v0.3.7
+          tool-version: v0.3.8
 ```
 
 The consumer workflow must check out its mod repository first. The action installs the scanner from its exact tagged GitHub source; it never runs `pip install .` in the consumer project.
 
 ### Use a project-specific release policy
 
-Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. ModRelease Studio v0.3.7 supports required path globs and ERROR/WARNING/INFO severity; an ERROR-level missing path fails the scan. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
+Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. ModRelease Studio v0.3.8 supports required path globs and ERROR/WARNING/INFO severity; an ERROR-level missing path fails the scan. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.9
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.10
   with:
     mod-path: .
     config-file: modrelease.toml
-    tool-version: v0.3.7
+    tool-version: v0.3.8
 ```
 
 Example policy:
@@ -60,7 +60,7 @@ required_paths_severity = "ERROR"
 |---|---|---|
 | `mod-path` | `.` | Mod folder or ZIP path relative to the checked-out workspace. |
 | `config-file` | empty | Optional TOML configuration path relative to the checked-out workspace. |
-| `tool-version` | `v0.3.7` | Exact scanner tag, such as `v0.3.7`. |
+| `tool-version` | `v0.3.8` | Exact scanner tag, such as `v0.3.8`. |
 | `python-version` | `3.12` | Python runtime. |
 | `artifact-name` | `modrelease-report` | Name of the uploaded reports artifact. |
 | `fail-on-warning` | `false` | Also fail the workflow when advisory warnings exist. Errors always fail the scan. |
