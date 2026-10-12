@@ -42,7 +42,7 @@ jobs:
         uses: ./
         with:
           mod-path: examples/policy-project
-          tool-version: 0.3.70
+          tool-version: 0.3.71
           artifact-name: unprefixed-version-report
       - name: Assert the unprefixed scanner version succeeds
         env:
@@ -58,7 +58,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: sarif-project
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: sarif-path-report
       - name: Assert SARIF output survives a blocking finding with repository paths
         env:
@@ -78,7 +78,7 @@ jobs:
           assert uri == "sarif-project/common/settings.cfg"
           PYCODE
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.70"
+        run: test "$(modrelease --version)" = "modrelease 0.3.71"
       - name: Verify changed-file-size warning from the installed scanner
         run: |
           python - <<'PYCODE'
@@ -264,10 +264,10 @@ jobs:
         continue-on-error: true
         with:
           mod-path: examples/path-collision-project
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.70"
+        run: test "$(modrelease --version)" = "modrelease 0.3.71"
       - name: Assert collision finding was blocking
         if: always()
         env:
@@ -286,7 +286,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: unsafe-path.zip
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: unsafe-path-report
       - name: Assert nonportable path finding was blocking
         if: always()
@@ -300,7 +300,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/invalid-scan-config/modrelease.toml
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: invalid-policy-report
       - name: Assert invalid scan policy was blocking
         if: always()
@@ -315,7 +315,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: warning-project
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           fail-on-warning: true
           artifact-name: warning-report
       - name: Assert warning policy was blocking
@@ -332,7 +332,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: ${{ runner.temp }}/outside-modrelease.toml
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: outside-config-report
       - name: Assert external config path was rejected
         if: always()
@@ -348,7 +348,7 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: config-symlink.toml
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: symlink-config-report
       - name: Assert config symlink escape was rejected
         if: always()
@@ -363,7 +363,7 @@ jobs:
         continue-on-error: true
         with:
           mod-path: ${{ runner.temp }}/outside-mod
-          tool-version: v0.3.70
+          tool-version: v0.3.71
           artifact-name: outside-mod-report
       - name: Assert external mod-path was rejected
         if: always()
