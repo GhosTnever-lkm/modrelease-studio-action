@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.0.53 - 2026-10-12
+
+- Pin ModRelease Studio v0.3.67 after correcting tagged package metadata; align the default input, integration CI, and usage examples.
+
 ## 1.0.52 - 2026-10-12
 
-- Pin ModRelease Studio v0.3.66 in the default input, integration CI, and usage examples.
+- Pin ModRelease Studio v0.3.67 in the default input, integration CI, and usage examples.
 
 ## 1.0.49 - 2026-10-12
 
