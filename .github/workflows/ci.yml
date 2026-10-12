@@ -37,6 +37,8 @@ jobs:
         with:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
+      - name: Assert default scanner version
+        run: test "$(modrelease --version)" = "modrelease 0.3.73"
       - name: Exercise the scanner version input without a leading v
         id: unprefixed-version
         uses: ./
@@ -48,6 +50,8 @@ jobs:
         env:
           ACTION_OUTCOME: ${{ steps.unprefixed-version.outcome }}
         run: test "$ACTION_OUTCOME" = "success"
+      - name: Assert unprefixed scanner version installed the requested release
+        run: test "$(modrelease --version)" = "modrelease 0.3.71"
       - name: Create a synthetic SARIF path fixture
         run: |
           mkdir -p sarif-project/common
@@ -77,8 +81,6 @@ jobs:
           uri = result["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
           assert uri == "sarif-project/common/settings.cfg"
           PYCODE
-      - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.71"
       - name: Verify changed-file-size warning from the installed scanner
         run: |
           python - <<'PYCODE'

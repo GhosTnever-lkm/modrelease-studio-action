@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.59 - 2026-10-13
+
+- Assert the default scanner version immediately after the default-input integration run; verify the unprefixed version input installs the requested release.
+
 ## 1.0.58 - 2026-10-12
 
 - Pin the default scanner and integration examples to ModRelease Studio v0.3.73.
