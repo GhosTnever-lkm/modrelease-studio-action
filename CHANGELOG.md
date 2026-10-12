@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.58 - 2026-10-12
+
+- Pin the default scanner and integration examples to ModRelease Studio v0.3.73.
+
 ## 1.0.57 - 2026-10-12
 
 - Pin the default scanner and integration examples to ModRelease Studio v0.3.71.
