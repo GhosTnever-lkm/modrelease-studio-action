@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.47 - 2026-10-12
+
+- Pin the default scanner to ModRelease Studio v0.3.62, including fine-grained GitHub token detection; refresh examples and CI integration scans.
+
 ## 1.0.46 - 2026-10-12
 
 - Reject scanner version tags with leading zeroes so tool-version validation matches SemVer.
@@ -7,7 +11,7 @@
 
 ## 1.0.45 - 2026-10-12
 
-- Pin the default scanner to ModRelease Studio v0.3.61; update the examples and integration CI to assert the current scanner release.
+- Pin the default scanner to ModRelease Studio v0.3.62; update the examples and integration CI to assert the current scanner release.
 
 ## 1.0.44 - 2026-10-12
 
