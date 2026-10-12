@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.48 - 2026-10-12
+
+- Correct the scanner version assertions in integration CI and republish the v0.3.62 default as a green release.
+
 ## 1.0.47 - 2026-10-12
 
 - Pin the default scanner to ModRelease Studio v0.3.62, including fine-grained GitHub token detection; refresh examples and CI integration scans.

@@ -67,7 +67,7 @@ jobs:
           assert uri == "sarif-project/common/settings.cfg"
           PYCODE
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.61"
+        run: test "$(modrelease --version)" = "modrelease 0.3.62"
       - name: Verify changed-file-size warning from the installed scanner
         run: |
           python - <<'PYCODE'
@@ -256,7 +256,7 @@ jobs:
           tool-version: v0.3.62
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.61"
+        run: test "$(modrelease --version)" = "modrelease 0.3.62"
       - name: Assert collision finding was blocking
         if: always()
         env:
