@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.56 - 2026-10-12
+
+- Pin the default scanner and integration examples to ModRelease Studio v0.3.70.
+
 ## 1.0.55 - 2026-10-12
 
 - Normalize accepted scanner versions without a leading `v` to the published Git tag before installation.
