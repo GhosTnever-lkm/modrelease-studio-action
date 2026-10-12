@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.45 - 2026-10-12
+
+- Pin the default scanner to ModRelease Studio v0.3.61; update the examples and integration CI to assert the current scanner release.
+
 ## 1.0.44 - 2026-10-12
 
 - Pin the default scanner to ModRelease Studio v0.3.60, including its synchronized release metadata and installation examples.
