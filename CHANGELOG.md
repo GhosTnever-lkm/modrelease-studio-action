@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.50 - 2026-10-12
+
+- Pin ModRelease Studio v0.3.64 in the default input, integration CI, and usage examples.
+
 ## 1.0.49 - 2026-10-12
 
 - Pin the default scanner and integration CI to ModRelease Studio v0.3.63, including the corrected modpack and CI-gate guidance.
