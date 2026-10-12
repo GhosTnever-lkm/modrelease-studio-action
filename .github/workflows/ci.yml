@@ -21,6 +21,17 @@ jobs:
         env:
           GITHUB_STEP_SUMMARY: ${{ runner.temp }}/modrelease-summary.md
         run: python scripts/annotate.py examples/findings.sample.json
+      - name: Reject a scanner tag that violates SemVer
+        id: invalid-semver
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: examples/policy-project
+          tool-version: v01.0.0
+      - name: Assert invalid scanner tag was rejected
+        env:
+          ACTION_OUTCOME: ${{ steps.invalid-semver.outcome }}
+        run: test "$ACTION_OUTCOME" = "failure"
       - name: Exercise the composite Action with a project policy
         uses: ./
         with:

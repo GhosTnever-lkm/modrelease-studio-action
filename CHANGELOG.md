@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.46 - 2026-10-12
+
+- Reject scanner version tags with leading zeroes so tool-version validation matches SemVer.
+- Add an integration check for invalid scanner version input.
+
 ## 1.0.45 - 2026-10-12
 
 - Pin the default scanner to ModRelease Studio v0.3.61; update the examples and integration CI to assert the current scanner release.

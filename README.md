@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.45
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.46
         with:
           mod-path: .
           tool-version: v0.3.61
@@ -39,7 +39,7 @@ The consumer workflow must check out its mod repository first. The action instal
 Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.61 supports required path globs, confines content reads to indexed regular files, does not follow symlinks or Windows directory junctions, fails closed with a `READ_METADATA` warning when a directory’s link/junction status cannot be checked, visibly escapes invisible characters in report artifacts, and warns when a text file grows past the configured read limit, prunes generated/dependency folders before indexing and content checks, and flags OS junk files. Shareable reports include only the source basename, not local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project).
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.45
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.46
   with:
     mod-path: .
     config-file: modrelease.toml
@@ -65,7 +65,7 @@ required_paths_severity = "ERROR"
 | `artifact-name` | `modrelease-report` | Name of the uploaded reports artifact. |
 | `fail-on-warning` | `false` | Also fail the workflow when advisory warnings exist. Errors always fail the scan. |
 
-The `tool-version` input accepts a strict `major.minor.patch` tag, with an optional leading `v`. The action pins its helper actions to major releases. GitHub-hosted runners are recommended; self-hosted runners need support for the Node runtime used by the referenced Actions.
+The `tool-version` input accepts a strict `major.minor.patch` tag (no leading zeroes except for `0`), with an optional leading `v`. The action pins its helper actions to major releases. GitHub-hosted runners are recommended; self-hosted runners need support for the Node runtime used by the referenced Actions.
 
 ## What the workflow receives
 
@@ -92,7 +92,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Scan the checked-out mod folder
         id: modrelease
-        uses: GhosTnever-lkm/modrelease-studio-action@v1.0.45
+        uses: GhosTnever-lkm/modrelease-studio-action@v1.0.46
         with:
           mod-path: mods/my-mod
       - name: Upload findings to Code Scanning
