@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.0.51 - 2026-10-12
+## 1.0.52 - 2026-10-12
 
-- Pin ModRelease Studio v0.3.65 in the default input, integration CI, and usage examples.
+- Pin ModRelease Studio v0.3.66 in the default input, integration CI, and usage examples.
 
 ## 1.0.49 - 2026-10-12
 
