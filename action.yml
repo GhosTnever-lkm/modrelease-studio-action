@@ -11,9 +11,9 @@ inputs:
     required: false
     default: ''
   tool-version:
-    description: ModRelease Studio release tag. Must be an exact semantic version tag such as v0.3.62.
+    description: ModRelease Studio release tag. Must be an exact semantic version tag such as v0.3.63.
     required: false
-    default: v0.3.62
+    default: v0.3.63
   python-version:
     description: Python version used to run ModRelease Studio.
     required: false
@@ -48,7 +48,7 @@ runs:
         TOOL_VERSION: ${{ inputs.tool-version }}
       run: |
         if [[ ! "$TOOL_VERSION" =~ ^v?(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
-          echo "tool-version must be an exact semantic version tag, for example v0.3.62" >&2
+          echo "tool-version must be an exact semantic version tag, for example v0.3.63" >&2
           exit 2
         fi
     - name: Validate fail-on-warning input
