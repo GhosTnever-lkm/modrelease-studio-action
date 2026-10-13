@@ -8,6 +8,17 @@ permissions:
   contents: read
 
 jobs:
+  windows-checkout:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Reject case-insensitive tracked-path collisions
+        run: python scripts/check_casefold_paths.py
+      - name: Run portable unit tests
+        run: python -m unittest discover -s tests -v
   unit-tests:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +49,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.73"
+        run: test "$(modrelease --version)" = "modrelease 0.3.76"
       - name: Exercise the scanner version input without a leading v
         id: unprefixed-version
         uses: ./
@@ -260,21 +271,37 @@ jobs:
           assert all(code in markdown.lower() for code in ("202e", "2028", "2029"))
           PY
 
+      - name: Create synthetic case-colliding ZIP fixture
+        run: |
+          python - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("path-collision.zip", "w") as archive:
+              archive.writestr("Common/Events.txt", "first\n")
+              archive.writestr("common/events.TXT", "second\n")
+          PY
       - name: Verify cross-platform path collision blocks the action
         id: expected-collision-failure
         uses: ./
         continue-on-error: true
         with:
-          mod-path: examples/path-collision-project
-          tool-version: v0.3.71
+          mod-path: path-collision.zip
+          tool-version: v0.3.76
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.71"
+        run: test "$(modrelease --version)" = "modrelease 0.3.76"
       - name: Assert collision finding was blocking
         if: always()
         env:
           ACTION_OUTCOME: ${{ steps.expected-collision-failure.outcome }}
-        run: test "$ACTION_OUTCOME" = "failure"
+          JSON_REPORT: ${{ steps.expected-collision-failure.outputs.json-report }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads(Path(os.environ["JSON_REPORT"]).read_text(encoding="utf-8"))
+          assert os.environ["ACTION_OUTCOME"] == "failure"
+          assert any(item["code"] == "CASE_COLLISION" for item in report["findings"])
+          PY
       - name: Create a synthetic Windows reserved-name archive
         run: |
           python - <<'PY'

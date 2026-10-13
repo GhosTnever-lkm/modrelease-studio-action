@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.60 - 2026-10-13
+
+- Pin the Action default and integration checks to ModRelease Studio v0.3.76.
+- Generate the case-collision ZIP in CI instead of storing case-colliding filenames, so Windows users can clone the repository cleanly; assert the emitted CASE_COLLISION finding.
+
 ## 1.0.59 - 2026-10-13
 
 - Assert the default scanner version immediately after the default-input integration run; verify the unprefixed version input installs the requested release.
