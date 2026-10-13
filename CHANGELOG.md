@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.61 - 2026-10-13
+
+- Update the Action default and documentation examples to ModRelease Studio v0.3.77.
+
 ## 1.0.60 - 2026-10-13
 
 - Pin the Action default and integration checks to ModRelease Studio v0.3.76.

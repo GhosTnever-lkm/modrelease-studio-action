@@ -49,7 +49,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.76"
+        run: test "$(modrelease --version)" = "modrelease 0.3.77"
       - name: Exercise the scanner version input without a leading v
         id: unprefixed-version
         uses: ./
@@ -285,10 +285,10 @@ jobs:
         continue-on-error: true
         with:
           mod-path: path-collision.zip
-          tool-version: v0.3.76
+          tool-version: v0.3.77
           artifact-name: path-collision-report
       - name: Assert explicit scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.76"
+        run: test "$(modrelease --version)" = "modrelease 0.3.77"
       - name: Assert collision finding was blocking
         if: always()
         env:
