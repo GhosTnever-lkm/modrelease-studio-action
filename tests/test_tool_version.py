@@ -35,6 +35,16 @@ class ToolVersionTests(unittest.TestCase):
                 self.assertEqual(main(), 2)
             self.assertFalse(output.exists())
 
+    def test_default_scanner_version_matches_action_docs_and_ci(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        action = (root / "action.yml").read_text(encoding="utf-8")
+        readme = (root / "README.md").read_text(encoding="utf-8")
+        workflow = (root / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertIn("default: v0.3.76", action)
+        self.assertIn("tool-version: v0.3.76", readme)
+        self.assertIn("@v1.0.60", readme)
+        self.assertIn('modrelease 0.3.76', workflow)
+
     def test_action_installs_normalized_version_output(self) -> None:
         root = Path(__file__).resolve().parents[1]
         action = (root / "action.yml").read_text(encoding="utf-8")
