@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.64 - 2026-10-15
+
+- Pin the default scanner to ModRelease Studio v0.3.81, including its report privacy fix for local filesystem errors.
+- Update CI expectations and consumer examples to the current scanner and Action release.
+
 ## 1.0.63 - 2026-10-15
 
 - Align the default scanner, usage examples, CI assertion, and version contract with ModRelease Studio v0.3.80.
