@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.63 - 2026-10-15
+
+- Align the default scanner, usage examples, CI assertion, and version contract with ModRelease Studio v0.3.80.
+
 ## 1.0.62 - 2026-10-13
 
 - Pin the default scanner to ModRelease Studio v0.3.78 with file-replacement detection and bounded ZIP decompression.
