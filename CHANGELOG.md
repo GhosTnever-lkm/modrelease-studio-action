@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.65 - 2026-10-17
+
+- Update the default scanner to ModRelease Studio v0.3.82 for environment-file scanning and quoted AWS secret-key detection.
+- Exercise these fixes through the composite Action in CI and verify that all three report formats omit the synthetic credential values.
+- Keep explicit older scanner versions in the compatibility fixtures.
+
 ## 1.0.64 - 2026-10-15
 
 - Pin the default scanner to ModRelease Studio v0.3.81, including its report privacy fix for local filesystem errors.
