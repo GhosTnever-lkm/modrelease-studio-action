@@ -49,7 +49,42 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.81"
+        run: test "$(modrelease --version)" = "modrelease 0.3.82"
+      - name: Create synthetic environment and quoted-key fixtures
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("environment-project")
+          root.mkdir()
+          (root / ".env").write_text("api_key=FAKE_environment_value_123456789\n", encoding="utf-8")
+          (root / ".env.production").write_text("token=FAKE_production_value_123456789\n", encoding="utf-8")
+          (root / "settings.json").write_text(json.dumps({"aws_secret_access_key": "FAKE" + "z" * 36}), encoding="utf-8")
+          PY
+      - name: Scan environment files with the default scanner
+        id: environment-scan
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: environment-project
+          artifact-name: environment-config-report
+      - name: Assert findings block the Action without exposing values
+        env:
+          ACTION_OUTCOME: ${{ steps.environment-scan.outcome }}
+          JSON_REPORT: ${{ steps.environment-scan.outputs.json-report }}
+          MARKDOWN_REPORT: ${{ steps.environment-scan.outputs.markdown-report }}
+          SARIF_REPORT: ${{ steps.environment-scan.outputs.sarif-report }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          assert os.environ["ACTION_OUTCOME"] == "failure"
+          reports = [Path(os.environ[key]).read_text(encoding="utf-8") for key in ("JSON_REPORT", "MARKDOWN_REPORT", "SARIF_REPORT")]
+          findings = {(item["path"], item["code"]) for item in json.loads(reports[0])["findings"]}
+          assert {(".env", "GENERIC_API_KEY"), (".env.production", "GENERIC_API_KEY"), ("settings.json", "AWS_SECRET_KEY")} <= findings
+          for value in ("FAKE_environment_value_123456789", "FAKE_production_value_123456789", "FAKE" + "z" * 36):
+              assert all(value not in report for report in reports)
+          PY
       - name: Exercise the scanner version input without a leading v
         id: unprefixed-version
         uses: ./
