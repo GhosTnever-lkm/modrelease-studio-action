@@ -40,13 +40,13 @@ class ToolVersionTests(unittest.TestCase):
         action = (root / "action.yml").read_text(encoding="utf-8")
         readme = (root / "README.md").read_text(encoding="utf-8")
         workflow = (root / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
-        self.assertIn("default: v0.3.82", action)
-        self.assertNotIn("v0.3.81", action)
-        self.assertIn("tool-version: v0.3.82", readme)
-        self.assertNotIn("v0.3.81", readme)
-        self.assertIn("@v1.0.65", readme)
-        self.assertNotIn("@v1.0.64", readme)
-        self.assertIn('modrelease 0.3.82', workflow)
+        self.assertIn("default: v0.3.84", action)
+        self.assertNotIn("v0.3.83", action)
+        self.assertIn("tool-version: v0.3.84", readme)
+        self.assertNotIn("v0.3.83", readme)
+        self.assertIn("@v1.0.66", readme)
+        self.assertNotIn("@v1.0.65", readme)
+        self.assertIn('modrelease 0.3.84', workflow)
 
     def test_action_installs_normalized_version_output(self) -> None:
         root = Path(__file__).resolve().parents[1]
