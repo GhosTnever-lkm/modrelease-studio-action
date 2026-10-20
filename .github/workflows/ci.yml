@@ -49,7 +49,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.84"
+        run: test "$(modrelease --version)" = "modrelease 0.3.85"
       - name: Create synthetic environment and quoted-key fixtures
         run: |
           python - <<'PY'
@@ -132,6 +132,39 @@ jobs:
           uri = result["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
           assert uri == "sarif-project/common/settings.cfg"
           PYCODE
+      - name: Create an undecodable filename fixture
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          root = Path("surrogate-project")
+          root.mkdir()
+          name = os.fsdecode(b"bad_\xff_name.txt")
+          (root / name).write_text("api_key=FAKE_surrogate_path_fixture_123456789\n", encoding="utf-8")
+          PY
+      - name: Scan a finding with an undecodable filename byte
+        id: surrogate-path-scan
+        uses: ./
+        continue-on-error: true
+        with:
+          mod-path: surrogate-project
+          artifact-name: surrogate-path-report
+      - name: Assert SARIF URI encodes the original filename byte
+        env:
+          ACTION_OUTCOME: ${{ steps.surrogate-path-scan.outcome }}
+          SARIF_REPORT: ${{ steps.surrogate-path-scan.outputs.sarif-report }}
+          SARIF_READY: ${{ steps.surrogate-path-scan.outputs.sarif-ready }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          assert os.environ["ACTION_OUTCOME"] == "failure"
+          assert os.environ["SARIF_READY"] == "true"
+          report = json.loads(Path(os.environ["SARIF_REPORT"]).read_text(encoding="utf-8"))
+          result = next(item for item in report["runs"][0]["results"] if item["ruleId"] == "GENERIC_API_KEY")
+          uri = result["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
+          assert uri == "surrogate-project/bad_%FF_name.txt", uri
+          PY
       - name: Verify changed-file-size warning from the installed scanner
         run: |
           python - <<'PYCODE'

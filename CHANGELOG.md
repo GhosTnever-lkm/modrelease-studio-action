@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.67 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.85, including SARIF encoding for filesystem surrogate paths.
+- Add a Linux composite-action regression for findings in a file with an undecodable filename byte.
+- Create a GitHub Release automatically for newly pushed version tags.
+
 ## 1.0.66 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.84, including complete multi-category secret reporting.
