@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.68 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.86, including normalized repository-relative SARIF prefixes.
+- Update the composite Action CI and user documentation to the current scanner and Action versions.
+- Keep the independent Windows Pro package and pins unchanged.
+
 ## 1.0.67 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.85, including SARIF encoding for filesystem surrogate paths.

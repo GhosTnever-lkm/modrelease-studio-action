@@ -49,7 +49,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.85"
+        run: test "$(modrelease --version)" = "modrelease 0.3.86"
       - name: Create synthetic environment and quoted-key fixtures
         run: |
           python - <<'PY'
