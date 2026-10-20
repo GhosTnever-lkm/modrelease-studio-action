@@ -13,7 +13,7 @@ inputs:
   tool-version:
     description: ModRelease Studio release tag. Accepts an exact semantic version with or without the leading v.
     required: false
-    default: v0.3.87
+    default: v0.3.88
   python-version:
     description: Python version used to run ModRelease Studio.
     required: false
