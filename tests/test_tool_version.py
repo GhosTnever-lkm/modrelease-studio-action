@@ -47,7 +47,7 @@ class ToolVersionTests(unittest.TestCase):
         self.assertNotIn("v0.3.83", readme)
         self.assertIn("@v1.0.71", readme)
         self.assertNotIn("@v1.0.66", readme)
-        self.assertIn('ModRelease Studio v0.3.89', (root / "CHANGELOG.md").read_text(encoding="utf-8"))
+        self.assertIn('modrelease 0.3.89', workflow)
         self.assertIn('tags: ["v*"]', release)
         self.assertIn("contents: write", release)
         self.assertIn('gh release create "$GITHUB_REF_NAME"', release)
