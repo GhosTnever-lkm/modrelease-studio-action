@@ -26,24 +26,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.68
+      - uses: GhosTnever-lkm/modrelease-studio-action@v1.0.69
         with:
           mod-path: .
-          tool-version: v0.3.86
+          tool-version: v0.3.87
 ```
 
 The consumer workflow must check out its mod repository first. The action installs the scanner from its exact tagged GitHub source; it never runs `pip install .` in the consumer project.
 
 ### Use a project-specific release policy
 
-Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.86 scans `.env`, `.env.*`, and `*.env` configuration files, detects quoted AWS secret-key fields in JSON/YAML, reports multiple matching secret categories in the same file, and writes SARIF artifact URIs for unusual filesystem-encoded names and normalizes safe relative SARIF prefixes such as `.`. It also detects fine-grained GitHub personal access tokens (`github_pat_`) without echoing their value. Filesystem errors and shareable reports omit local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project) and synthetic environment-file fixtures.
+Create a `modrelease.toml` file in the checked-out mod repository and pass its workspace-relative path with `config-file`. The action rejects paths that resolve outside the checkout, including symlink escapes. ModRelease Studio v0.3.87 scans `.env`, `.env.*`, and `*.env` configuration files, detects quoted AWS secret-key fields in JSON/YAML, reports multiple matching secret categories in the same file, and writes SARIF artifact URIs for unusual filesystem-encoded names and normalizes safe relative SARIF prefixes such as `.`. It also detects fine-grained GitHub personal access tokens (`github_pat_`) without echoing their value, and detects Windows junctions on Python 3.11. Filesystem errors and shareable reports omit local parent directories. The action CI exercises this integration using [`examples/policy-project`](examples/policy-project) and synthetic environment-file fixtures.
 
 ```yaml
-- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.68
+- uses: GhosTnever-lkm/modrelease-studio-action@v1.0.69
   with:
     mod-path: .
     config-file: modrelease.toml
-    tool-version: v0.3.86
+    tool-version: v0.3.87
 ```
 
 Example policy:
@@ -60,7 +60,7 @@ required_paths_severity = "ERROR"
 |---|---|---|
 | `mod-path` | `.` | Mod folder or ZIP path relative to the checked-out workspace. |
 | `config-file` | empty | Optional TOML configuration path relative to the checked-out workspace. |
-| `tool-version` | `v0.3.86` | Exact scanner version with or without a leading `v`, such as `0.3.86` or `v0.3.86`. |
+| `tool-version` | `v0.3.87` | Exact scanner version with or without a leading `v`, such as `0.3.87` or `v0.3.87`. |
 | `python-version` | `3.12` | Python runtime. |
 | `artifact-name` | `modrelease-report` | Name of the uploaded reports artifact. |
 | `fail-on-warning` | `false` | Also fail the workflow when advisory warnings exist. Errors always fail the scan. |
@@ -92,7 +92,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Scan the checked-out mod folder
         id: modrelease
-        uses: GhosTnever-lkm/modrelease-studio-action@v1.0.68
+        uses: GhosTnever-lkm/modrelease-studio-action@v1.0.69
         with:
           mod-path: mods/my-mod
       - name: Upload findings to Code Scanning

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.69 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.87, including Python 3.11 Windows junction detection.
+
 ## 1.0.68 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.86, including normalized repository-relative SARIF prefixes.
