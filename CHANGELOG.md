@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.72 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.90, including blocking scans when a ZIP changes after indexing.
+- Refresh quick-start and example references to Action v1.0.72.
+
 ## 1.0.71 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.89, including same-language localization key collision warnings across YAML files.
