@@ -49,7 +49,7 @@ jobs:
           mod-path: examples/policy-project
           config-file: examples/policy-project/modrelease.toml
       - name: Assert default scanner version
-        run: test "$(modrelease --version)" = "modrelease 0.3.82"
+        run: test "$(modrelease --version)" = "modrelease 0.3.84"
       - name: Create synthetic environment and quoted-key fixtures
         run: |
           python - <<'PY'
@@ -60,6 +60,9 @@ jobs:
           (root / ".env").write_text("api_key=FAKE_environment_value_123456789\n", encoding="utf-8")
           (root / ".env.production").write_text("token=FAKE_production_value_123456789\n", encoding="utf-8")
           (root / "settings.json").write_text(json.dumps({"aws_secret_access_key": "FAKE" + "z" * 36}), encoding="utf-8")
+          slack_token = "xoxb-" + "123456789012-" + "FAKE" + "FAKE" + "TOKEN" + "VALUE"
+          (root / "mixed-secrets.txt").write_text("aws_access_key_id=AKIA1234567890ABCDEF\ntoken=" + slack_token + "\n", encoding="utf-8")
+          Path("slack-token-fixture.txt").write_text(slack_token, encoding="utf-8")
           PY
       - name: Scan environment files with the default scanner
         id: environment-scan
@@ -74,6 +77,7 @@ jobs:
           JSON_REPORT: ${{ steps.environment-scan.outputs.json-report }}
           MARKDOWN_REPORT: ${{ steps.environment-scan.outputs.markdown-report }}
           SARIF_REPORT: ${{ steps.environment-scan.outputs.sarif-report }}
+          SLACK_TOKEN_FIXTURE: slack-token-fixture.txt
         run: |
           python - <<'PY'
           import json, os
@@ -81,8 +85,9 @@ jobs:
           assert os.environ["ACTION_OUTCOME"] == "failure"
           reports = [Path(os.environ[key]).read_text(encoding="utf-8") for key in ("JSON_REPORT", "MARKDOWN_REPORT", "SARIF_REPORT")]
           findings = {(item["path"], item["code"]) for item in json.loads(reports[0])["findings"]}
-          assert {(".env", "GENERIC_API_KEY"), (".env.production", "GENERIC_API_KEY"), ("settings.json", "AWS_SECRET_KEY")} <= findings
-          for value in ("FAKE_environment_value_123456789", "FAKE_production_value_123456789", "FAKE" + "z" * 36):
+          assert {(".env", "GENERIC_API_KEY"), (".env.production", "GENERIC_API_KEY"), ("settings.json", "AWS_SECRET_KEY"), ("mixed-secrets.txt", "AWS_ACCESS_KEY"), ("mixed-secrets.txt", "SLACK_TOKEN")} <= findings
+          slack_token = Path(os.environ["SLACK_TOKEN_FIXTURE"]).read_text(encoding="utf-8")
+          for value in ("FAKE_environment_value_123456789", "FAKE_production_value_123456789", "FAKE" + "z" * 36, "AKIA1234567890ABCDEF", slack_token):
               assert all(value not in report for report in reports)
           PY
       - name: Exercise the scanner version input without a leading v

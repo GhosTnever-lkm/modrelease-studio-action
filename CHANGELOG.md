@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.66 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.84, including complete multi-category secret reporting.
+- Verify the composite Action reports both AWS and Slack findings from one file and redacts both synthetic values.
+- Update consumer examples and the tested Action release reference.
+
 ## 1.0.65 - 2026-10-17
 
 - Update the default scanner to ModRelease Studio v0.3.82 for environment-file scanning and quoted AWS secret-key detection.
