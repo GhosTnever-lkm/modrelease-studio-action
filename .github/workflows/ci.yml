@@ -163,7 +163,7 @@ jobs:
           report = json.loads(Path(os.environ["SARIF_REPORT"]).read_text(encoding="utf-8"))
           result = next(item for item in report["runs"][0]["results"] if item["ruleId"] == "GENERIC_API_KEY")
           uri = result["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
-          assert uri == "bad_%FF_name.txt", uri
+          assert uri == "surrogate-project/bad_%FF_name.txt", uri
           PY
       - name: Verify changed-file-size warning from the installed scanner
         run: |
