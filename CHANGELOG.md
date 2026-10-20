@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.71 - 2026-10-20
+
+- Pin the default scanner to ModRelease Studio v0.3.89, including same-language localization key collision warnings across YAML files.
+- Refresh the quick-start and example Action references to v1.0.71.
+
 ## 1.0.70 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.88, including the folder directory-entry limit fix.
