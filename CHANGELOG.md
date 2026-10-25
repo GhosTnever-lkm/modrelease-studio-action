@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.73 - 2026-10-25
+
+- Pin the default scanner to ModRelease Studio v0.3.91, including temporary AWS access key (`ASIA…`) detection.
+- Refresh quick-start and example Action references to v1.0.73.
+
 ## 1.0.72 - 2026-10-20
 
 - Pin the default scanner to ModRelease Studio v0.3.90, including blocking scans when a ZIP changes after indexing.
